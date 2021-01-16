@@ -1,0 +1,13 @@
+---
+layout: post
+title: npm (1)
+image: npm.png
+date: 2020-01-16 20:44:20 +0200
+tags:
+categories: npm
+---
+
+## npm 이란 무엇인가
+npm은 자바스크립트를 위한 패키지 관리자이다.   
+Node.js의 기본 패키지 관리자이기도 해서 Node.js를 깔면 자동으로 깔린다.  
+명령어를 통해 패키지를 설치할 수 있다.
