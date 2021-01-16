@@ -6,15 +6,14 @@ date: 2020-01-16 20:44:20 +0200
 tags:
 categories: npm
 ---
-
+*** 
 ## npm 이란 무엇인가
-***
 npm은 자바스크립트를 위한 패키지 관리자이다.   
 Node.js의 기본 패키지 관리자이기도 해서 Node.js를 깔면 자동으로 깔린다.  
 npm은 Node.js로 만들어진 모듈을 웹에서 받아서 설치하고 관리해주는 프로그램이다.
 
-## package.json
 ***
+## package.json
 npm을 통해 설치한 패키지들은 package.json에 기록된다.  
  package.json을 통해 설치한 패키지들을 확인하고 관리할 수 있다.  
  npm init 명령어를 통해 package.json을 생성할 수 있다. 
@@ -34,8 +33,9 @@ npm을 통해 설치한 패키지들은 package.json에 기록된다.
 항목에 입력하지 않으면 default값으로 자동으로 생성되니까 걱정하지말고 엔터를 연타해도 된다.  
 모두 default 값으로 할 경우 npm init -y로 바로 package.json을 생성할수 있다. 
 
-## npm 명령어 정리
 ***
+## npm 명령어 정리
+
 
 * npm init : 위에서 설명한대로 package.json을 생성하는 명령어. 새로운 프로젝트나 패키지를 만들 때 사용.  
 * npm install (== npm i): 패키지를 설치하는 명령어. **npm install [패키지이름]@[버전]** 으로 하면 특정한 버전을 설치할 수 있다. 버전을 latest로 하면 최신 버전을 설치한다. **npm install [주소]** 으로 하면 특정한 저장소에 있는 패키지를 설치할 수 있다. 주로 Github에만 있는 패키지를 설치할 때 사용한다. 
@@ -49,12 +49,11 @@ npm을 통해 설치한 패키지들은 package.json에 기록된다.
 * npm run : 그 이외의 scripts를 실행. 
 * npm cache : npm 내의 cache를 보여준다. npm에 문제가 생기면 npm cache clean을 통해 cache를 지운다.
   
-
+***
 ## npm 명령어 옵션
-  ***
 
 ### npm install
-***
+
   * npm install [package name] --save : 패키지를 설치하면서 package.json 파일에 있는 dependencies 객체에 지금 설치한 패키지 정보를 추가한다.
   * npm install [package name] --save-dev or -D : --save 옵션과 같이 package.json파일에 의존성 내용을 추가하지만 dependencies에 말고 devDependencies에 추가한다.
   * npm install [package name] --save-bundle : 패키지를 bundleDependencies에 추가.
@@ -62,5 +61,5 @@ npm을 통해 설치한 패키지들은 package.json에 기록된다.
   * npm install [package name] -global or  -g : 해당 패키지를 전역으로 설치한다. 전역 설치할 경우 다른 프로젝트에 영향을 끼칠 수도 있으므로 주의해야한다. 지역설치를 하려면 해당 옵션을 빼고 설치하면 된다.
 
 ### npm clean
-***
+
 * npm cache clean --force : npm 5 버전 이후로는 --force를 붙이지 않으면 오류가 발생한다고 한다. npm의 캐시를 삭제하는 명령어.
