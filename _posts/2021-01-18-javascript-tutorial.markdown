@@ -23,8 +23,7 @@ categories: javascript
     let sum2 = (a, b) => a + b
 {% endhighlight %}
 
-이렇게 생긴 녀석이다.. 저게 무슨 말인지 코드를 짜면서 직관적으로 이해할 수 있다면 당신은 머리가 꽤 좋은 편이다.  
-쉽게 말하면 이렇다.  
+이렇게 생긴 녀석이다..  무슨 뜻인지 쉽게 말하면 이렇다.  
 = 다음에 오는 것은 매개변수  
 => 다음에 오는 것은 반환값  
 즉, 위에 적힌 sum2는 a와 b를 매개변수로 해서 a + b를 반환하는 화살표 함수인 것이다.  
@@ -38,7 +37,7 @@ categories: javascript
 
 
 
-생각보다 간단하지 않은가? 단, 이것의 variation이 워낙 다양해서 자바스크립트 코드를 많이 보지 않았다면 헷갈릴 수가 있다.  
+생각보다 간단하지 않은가? 단, 이것의 variation이 다양해서 자바스크립트 코드를 많이 접하지 않았다면 헷갈릴 수가 있다.  
 다른 예를 살펴보자.
 
 {% highlight js %}
@@ -77,4 +76,5 @@ categories: javascript
 
 그 다음 이슈는 화살표 함수를 쓰고 안쓰고에 따른 지역성 차이인데, 이것은 아직 잘 이해가 되지 않는다. 자세한 내용은 영상에서 들어볼 수 있다. 이 포스트의 내용은 밑에 있는 영상을 참고하여 작성하였다. 
 
-<iframe src="https://www.youtube.com/watch?v=h33Srr5J9nY" frameborder="0" allowfullscreen></iframe>
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/h33Srr5J9nY/0.jpg)](https://www.youtube.com/watch?v=h33Srr5J9nY)
+
