@@ -49,3 +49,6 @@ package.json이 생성되었으면 npm install -D webpack webpack-cli로 webpack
 * devtools : 브라우저 devtools에 대한 메타 정보를 추가해 디버깅을 향상시킨다. 주로 source- map을 사용한다. 단, 빌드 속도가 느려진다.
 * target : bundle이 실행되어야 하는 환경을 적는다. 
 * resolve : 모듈 요청 해결을 위한 옵션.   
+
+..이렇게 webpack을 사용하려했으나, create-react-app을 사용하고 있었다면 이미 우리는 webpack을 사용하고 있었던 것이다. 단지 알아서 처리해주는 빌드도구여서 안 보였을뿐.  
+단, 실무에서 webpack 설정을 만져야 할 일이 있을 수 있으니까 알아두는 것이 좋다. 양식 정도는 익혀두자. 개인적으로 하는 소규모 프로젝트는 create-react-app을 사용하지 않고 직접 webpack과 babel을 설정해보는 것을 연습해 볼 생각이다. 다음 기회에.. 
