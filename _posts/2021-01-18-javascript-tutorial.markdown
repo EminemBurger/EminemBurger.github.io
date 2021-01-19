@@ -2,7 +2,7 @@
 layout: post
 title: javascript - 화살표 함수
 image: skeleton.gif
-date: 2020-01-18 10:08:20 +0200
+date: 2021-01-18 10:08:20 +0200
 tags: 
 categories: javascript
 ---
