@@ -36,8 +36,9 @@ categories: webpack
 
 이유는 webpack.config.js에서 설정이 false로 되어있기 때문이다. 이를 해결하기 위해선 react-app-rewired를 사용한다고 한다. 자세한 내용은 구글링으로 찾아보자. 
 
+![myImage](https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif)
+
 
 오늘도 수고했어용.
 
-![myImage](https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif)
 
