@@ -52,6 +52,7 @@ AVL 트리의 장점은 탐색속도가 빠른 이진 트리의 장점을 유지
 
 균형치는 왼쪽 서브트리의 높이에서 오른쪽 서브트리의 높이를 뺀 값이라고 했다. 혹은 그 반대일수도 있다. 위 그림을 보면 리프노드의 균형치는 모두 0 이다. 0인 이유는 왼쪽 서브트리나 오른쪽 서브트리가 없으므로 값이 높이를 뺀 값이 0이 되기 때문이다. 노드 33의 균형치는 1이다. 왼쪽 서브트리의 높이가 3이고 오른쪽 서브트리의 높이가 2이기 때문이다. 노드 9의 균형치는 -1이다. 왼쪽 서브트리의 높이가 1이고 오른쪽 서브트리의 높이가 2이기 때문이다. 균형치를 구하는 방법을 알아봤으니 균형치에 따라 수행되는 회전들에 대해 알아보자. 
 
+***
 ## AVL 트리의 회전
 
 * LL 회전 
@@ -111,19 +112,19 @@ RR 회전을 진행하면 위 그림과 같아진다.
 RL 회전은 RL 상태일 때 발생한다. RL 상태는 새로운 노드를 삽입했을 때,  특정 노드에서 오른쪽 서브 트리 높이와 왼쪽 서브 트리 높이를 뺏을 때 2 이상이 나오는 경우다. 여기까지는 RR회전과
 비슷하지만,  다른 점은 특정 노드의 오른쪽 서브 트리의 왼쪽 서브 트리에 삽입된다는 점이다.
 
-![]({{site.baseurl}}/images/avl-tree-lr.png)  
+![]({{site.baseurl}}/images/avl-tree-rl.png)  
 
 RL 회전은 자식 노드 c에 대해서 LL 회전을 진행한다.
 
-![]({{site.baseurl}}/images/avl-tree-lrl.png)  
+![]({{site.baseurl}}/images/avl-tree-rlr.png)  
 
 LL 회전을 진행하면 위 그림과 같아진다.
 
-![]({{site.baseurl}}/images/avl-tree-lrlr.png)  
+![]({{site.baseurl}}/images/avl-tree-rlrl.png)  
 
 그 후 부모 노드 p에 대해서 RR 회전을 수행한다.
 
-![]({{site.baseurl}}/images/avl-tree-lrlrl.png)  
+![]({{site.baseurl}}/images/avl-tree-rlrlr.png)  
 
 결과는 위 그림과 같다.
 
