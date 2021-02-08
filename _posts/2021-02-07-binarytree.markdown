@@ -55,13 +55,13 @@ AVL 트리의 장점은 탐색속도가 빠른 이진 트리의 장점을 유지
 
 * LL 회전 
 
-![]({{site.baseurl}}/images/avl-tree-ll.png)
+![]({{site.baseurl}}/images/avl-tree-ll.png)  
 LL 회전은 부모 노드 p의 왼쪽 자식 노드를, 자식 노드 c의 오른쪽 자식 노드로 바꾼다. 
 
-![]({{site.baseurl}}/images/avl-tree-lll.png)
+![]({{site.baseurl}}/images/avl-tree-lll.png)  
 노드 c의 오른쪽 자식 노드는 null 이었으므로 부모 노드 p의 왼쪽 자식 노드는 null이 된다.  
 
-![]({{site.baseurl}}/images/avl-tree-llll.png)
+![]({{site.baseurl}}/images/avl-tree-llll.png)  
 자식 노드 c의 오른쪽 자식 노드를 부모 노드였던 p로 한다. 이것이 바로 LL 회전이다.
 
 
