@@ -7,9 +7,11 @@ tags:
 categories: webpack
 ---
 
+***
+
 지난번 포스팅에서 나는 webpack을 설치하고 실습해보면서 익히려하였지만, 이미 나는 create-react-app을 통해 webpack을 나도 모르게 사용중이었다. 이미 webpack이 사용되고 있는 환경에서 webpack을 설치하며 실습을 진행하니 에러가 발생하였다. 그래서 다시 아무것도 설치가 안 된 새로운 개발환경을 create-react-app으로 만들었고 실습해보았다.
 
----
+***
 
 {% highlight js %}
     npm run eject
