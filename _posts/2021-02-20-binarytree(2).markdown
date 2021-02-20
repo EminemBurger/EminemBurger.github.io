@@ -7,12 +7,14 @@ tags:
 categories: data-structure
 ---
 
+***
+
 ## 레드블랙트리란
 레드블랙트리 또한 avl트리와 같이 balanced binary tree의 일종이다. 각 노드에 색깔을 저장하는 공간을 추가하여 색깔을 기준으로 균형을 맞추는 트리이다.
 
 avl 트리와 비교하자면 다음과 같다. 
 
-|RB tree|avl tree|
+|RB tree|AVL tree|
 |:---:|:---:|
 |삽입,삭제가 빠르다| search가 빠르다|
 | 대부분의 언어 map, multimap에 사용 | 조회에 속도가 중요한 database에 사용|
@@ -34,6 +36,7 @@ avl 트리와 rb 트리 모두 삽입, 삭제, 검색이 O(log N) 이지만 avl 
 * 새로 삽입되는 노드는 RED 이다.
 
 ![]({{site.baseurl}}/images/rb-tree1.png)
+
 임의의 노드에서 자식이 없는 쪽은 검은색 NIL 리프노드를 붙임으로써, 레드블랙트리 규칙을 만족시킨다. 하지만 자식이 없는 모든 노드에 일일이 NIL 리프노드를 붙이는 것은, 공간 낭비가 심하므로, NIL 리프노드를 하나만 할당하고 모든 NIL 리프노드에 대한 포인터가 이를 가리키게 하면 공간 절약과 다루기도 편해진다.
 
 ***
@@ -45,12 +48,12 @@ avl 트리와 rb 트리 모두 삽입, 삭제, 검색이 O(log N) 이지만 avl 
 
 ![]({{site.baseurl}}/images/rb-tree2.png)
 
-1. Recoloring
+**Recoloring**
 
 Recoloring을 수행하는 경우는, 삽입된 노드의 부모노드의 형제노드의 색깔이 RED인 경우이다.
 이 경우, 부모노드와 부모노드의 형제노드의 색깔을 BLACk으로 바꾼다. 그리고 이러한 작업은 루트 노드에 다다를 때까지 계속해서 반복된다. Recoloring을 수행하면서 부모 노드의 형제 노드의 색깔에 따라 Recoloring을 반복할 지, Rotation을 할지 결정된다. 형제노드가 없다면 BLACK이라 보고 Rotation을 수행할 것이다. 우리는 자식이 없는 쪽은 검은색 NIL 리프노드를 붙이기로 했었다.
 
-2. Rotation
+**Rotation**
 
 Rotation을 수행하는 경우는, 삽입된 노드의 부모노드의 형제노드의 색깔이 BLACK인 경우다.
 
@@ -75,6 +78,6 @@ rb 트리의 삭제는 복잡하므로, 다른 포스팅에서 다루겠다.
 
 
 ### Reference 
-https://nesoy.github.io/articles/2018-08/Algorithm-RedblackTree
-https://itstory.tk/entry/%EB%A0%88%EB%93%9C%EB%B8%94%EB%9E%99-%ED%8A%B8%EB%A6%ACRed-black-tree
+https://nesoy.github.io/articles/2018-08/Algorithm-RedblackTree  
+https://itstory.tk/entry/%EB%A0%88%EB%93%9C%EB%B8%94%EB%9E%99-%ED%8A%B8%EB%A6%ACRed-black-tree  
 https://www.geeksforgeeks.org/red-black-tree-set-2-insert/
