@@ -16,11 +16,11 @@ categories: libraries
 
 ***
 ## **Hook API**
-
 기본 hook
 * useState
 * useEffect
 * useContext
+
 
 추가 hook
 * useReducer
@@ -41,8 +41,8 @@ useState는 state 변수와 state를 업데이트하는 함수, 두 가지 쌍�
 첫 번째 인자가 state 변수이고, 두 번째 인자는 state를 업데이트하는 함수이다.
 두 번째 인자에 선언된 함수로 state 변수를 변경할 시, 렌더링이 다시 일어난다.
 
-![]({{site.baseurl}}/images/reacthook2.JPG)  
-다음과 같이 그대로 함수쓰듯이 사용하면 된다. 함수의 인자로 변경할 값을 전달해주면 해당 값으로 변경이 된다.
+![]({{site.baseurl}}/images/reacthook2.jpg)  
+다음과 같이 그대로 함수쓰듯이 사용하면 된다. 함수의 인자로 변경할 값을 전달해주면 해당 값으로 변경이 된다. 
 
 ***
 ## **useEffect**
