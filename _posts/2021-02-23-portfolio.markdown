@@ -1,7 +1,7 @@
 ---
 layout: post
 title: portfolio project
-image: portfoilo.JPG
+image: portfolio.gif
 date: 2021-02-23 23:08:20 +0200
 tags:
 categories: project
@@ -98,7 +98,7 @@ docker를 성공적으로 작성했다면 Dockerfile을 작성해보자.
 
 ***
 
-## **Dockerfile 형식 **
+## **Dockerfile 형식**
 
 {% highlight js %}
 
@@ -157,11 +157,11 @@ Dockerfile에서 CMD를 통해 실행시키는 server.js의 코드이다. 코드
 ![]({{site.baseurl}}/images/nginx1.jpg)  
 우리가 Node.js에서 express를 통해 생성한 서버는 웹 애플리케이션 서버이다. 웹 서버와 웹 애플리케이션 서버의 차이에 대해서 알아보자.
 
-**웹 서버**
+**웹 서버**  
 클라이언트의 요청을 받아서 처리하고, 그 결과를 웹 클라이언트에 응답한다. 정적 페이지만 처리하기에 HTML, CSS, javascript 파일을
 클라이언트에 제공할 때 웹 서버를 사용한다. 동적 페이지 처리가 필요할 경우, 웹 애플리케이션 서버에 처리를 넘긴다.
 
-**웹 애플리케이션 서버**
+**웹 애플리케이션 서버**  
 웹 서버로부터 동적 페이지 요청을 받아, 요청을 처리하고 그 결과를 웹 서버에 반환한다. 주로
 동적 페이지 생성을 위한 프로그램 실행과 데이터베이스 연동 기능을 처리한다.
 
