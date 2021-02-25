@@ -215,7 +215,7 @@ sudo nano [파일이름] 명령어를 통해 가상서버 파일을 작성한다
 		proxy_set_header X-Nginx-Proxy true; # nginx를 reverse proxy server로 설정
 		
 
-		proxy_pass http://192.168.0.9:5000/; # 실질적으로 요청할 서비스를 명시. 들어온 요청을 어디로 포워딩 할지 정한다.
+		proxy_pass http://192.168.0.11:5000/; # 실질적으로 요청할 서비스를 명시. 들어온 요청을 어디로 포워딩 할지 정한다.
 		proxy_redirect off;
 	}
 
