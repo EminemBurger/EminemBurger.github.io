@@ -70,5 +70,5 @@ jwt.verify() 메소드를 통해 토큰의 유효성을 검사할 수 있다. �
 ***
 
 ## **Reference**
-http://www.opennaru.com/opennaru-blog/jwt-json-web-token/
+http://www.opennaru.com/opennaru-blog/jwt-json-web-token/  
 https://helloinyong.tistory.com/111  
