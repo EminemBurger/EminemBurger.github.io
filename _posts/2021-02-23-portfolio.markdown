@@ -1,6 +1,6 @@
 ---
 layout: post
-title: portfolio test
+title: portfolio project
 image: portfolio.gif
 date: 2021-02-23 23:08:20 +0200
 tags:
