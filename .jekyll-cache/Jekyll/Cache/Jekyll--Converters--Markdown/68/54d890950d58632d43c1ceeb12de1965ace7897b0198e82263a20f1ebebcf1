@@ -1,0 +1,89 @@
+I"R)<hr />
+
+<h2 id="express란"><strong>express란?</strong></h2>
+<p><strong>express는 Node.js를 위한 개방적인 간결한 웹 프레임워크를 뜻한다.</strong></p>
+
+<p>많은 사람들이 node.js가 서버 자체라고 혼동하고 나 또한 그랬지만, <strong>node.js 자체는 간단하게 말하면 자바스크립트를 브라우저 밖에서 사용하게 해주는 런타임 환경</strong>이다.</p>
+
+<p>오늘날 우리가 사용하고 있는 브라우저들, 크롬, 파이어폭스, 오페라와 같은 것들에 기본적으로 자바스크립트 엔진이 탑재되어 있어서 프론트단에서 개발을 하는데 자바스크립트가 사용되고 있다. 반면, 백엔드에서는 자바스크립트 엔진이 존재하지 않았기에, 사용되는 서버 사이드 언어는 자바, PHP가 주를 이루었다. 이후 Node.js가 세상에 나오며 자바스크립트만으로 클라이언트와 서버 개발을 할 수 있게 된 것이다.</p>
+
+<p><strong>즉, express는 Node.js의 핵심 모듈들, http와 connect 컴포넌트를 기반으로 하여 쉽게 서버를 구성할 수 있게 만든 클래스와 라이브러리의 집합체이다.</strong></p>
+
+<hr />
+
+<h2 id="express를-사용하는-이유가-뭔가요"><strong>express를 사용하는 이유가 뭔가요?</strong></h2>
+<p><strong>편해서.</strong></p>
+
+<p>express를 사용하지 않고도 node.js의 모듈, http를 사용하면 서버를 생성할 수 있다.<br />
+하지만 작성해야 할 코드가 많아지고, 가독성 또한 현저히 떨어진다.</p>
+
+<p>다음 예시를 보자.</p>
+
+<p><strong>express를 사용하였을 경우</strong></p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="dl">'</span><span class="s1">Welcome Home</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/tcs</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="dl">'</span><span class="s1">HI RCSer</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Example app listening on port 8080!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<p><strong>http를 사용하였을 경우</strong></p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">400: Bad Request</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">Welcome Home</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">/tcs</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">HI RCSer</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">404</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">404: File Not Found</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">application/octet-stream</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="p">});</span>
+
+<span class="p">});</span>
+
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Example app listening on port 8080!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>현저하게 코드 양과 가독성에 차이가 난다. express 객체로 http 기본 메소드를 사용할 수 있으므로 get을 사용하면 되지만, http로 할 경우, req의 속성인 method와 url을 확인하여 클라이언트의 요청을 구분해야 한다. 이런 과정에서 조건문이 들어가며 코드양이 많아지고 가독성이 떨어진다. 물론 코드를 따로 작성하여 나눌 수 있지만 express를 사용한 것에 비해 직관성이 현저히 떨어진다.</p>
+
+<p>express을 사용할 경우 next를 사용한 미들웨어 사용, http 기본 메소드를 통한 REST api 가 훨씬 작성하기 쉽고, 코드를 이해하기도 쉬워진다. 물론 Vanila JS로 프로젝트를 진행할 경우, http를 써야겠지만 선택은 본인의 자유다.</p>
+
+<hr />
+
+<h2 id="reference"><strong>Reference</strong></h2>
+<p>https://wikibook.co.kr/article/what-is-expressjs/<br />
+https://velog.io/@madpotato1713/JAVASCRIPT-express%EB%9E%80</p>
+
+:ET

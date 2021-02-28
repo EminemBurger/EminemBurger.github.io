@@ -1,0 +1,97 @@
+I"�<hr />
+
+<p>오늘은 개인 프로젝트를 진행하면서 사용한 라이브러리인 bcrypt에 대해서 알아보려고 한다. 
+bcrypt는 암호화를 위한 라이브러리이다.</p>
+
+<p>bcrypt는 패스워드 저장을 목적으로 설계되었다. 현재까지 사용되는 가장 강력한 해시 메커니즘 중 하나이다. 이외에도 scrypt라는 bcrypt보다 미래에 경쟁력 있을 것이라 생각되는 암호화도 있다. 단 구현하는데 많은 비용이 들기 때문에, 통상적으로 bcrypt를 사용한다.</p>
+
+<p>bcrypt의 사용이유에 대해서 알아보자. bcrypt는 단방향 해시 알고리즘이다. 단방향과 해시란 뜻은 무엇일까?</p>
+
+<hr />
+
+<h2 id="단방향">단방향</h2>
+
+<p><strong>단방향</strong>은 암호화는 수행하지만 복호화가 불가능한 알고리즘<br />
+동일한 평문은 동일한 암호문으로 암호화되지만, 이를 바탕으로 평문을 복원할 수 없다. 따라서 패스워드는 양방향 암호로 저장하는 것보다 단방향 암호로 저장하는 것이 안전하다. 암호화된 패스워드가 탈취당해도 원래의 패스워드를 복원할 수 없고, 패스워드 자체를 검증할 때는 입력받은 값을 암호화해서 암호화된 값끼리 검증한다. 주로 hash 기법을 사용하며, 최소한 SHA-256, SHA-3를 쓰는 것이 좋다. 나머지 알고리즘은 취약점이 발견된 상태이기 때문이다.</p>
+
+<p><strong>해시</strong>란 임의의 크기를 가진 데이터를 고정된 데이터의 크기로 변환시키는 것을 말한다. 해시 알고리즘은 해시를 하는 방법에 대해 명세한 것이다.</p>
+
+<hr />
+
+<h2 id="양방향">양방향</h2>
+<p><strong>양방향</strong>은 암호화, 복호화시 모두 동일한 키를 사용하는 알고리즘<br />
+여기서 양방향은 대칭키와 비대칭키라는 종류로 또 나뉜다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">대칭키</th>
+      <th style="text-align: center">비대칭키</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">암,복호화에 서로 동일한 key가 사용</td>
+      <td style="text-align: center">암,복호화에 서로 다른 key를 사용</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">속도가 빠르다</td>
+      <td style="text-align: center">속도가 느리다</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">key를 비공개</td>
+      <td style="text-align: center">하나의 public key 사용</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">키 배송 위험성 존재</td>
+      <td style="text-align: center">키 배송이 없으므로 안정성이 높다</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">DES, AES</td>
+      <td style="text-align: center">RSA</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="왜-bcrypt를-쓰는가">왜 bcrypt를 쓰는가</h2>
+
+<p>bcrypt가 단방향 해시 알고리즘이며, 비밀번호를 저장하기에 쓰이는 적합한 알고리즘이라는 건 알았다. 하지만 SHA-3이나 SHA-256 대신에 bcrypt를 쓰는 이유는 무엇일까?</p>
+
+<p>SHA-256과 SHA-3 또한 안정성 높은 해시 알고리즘이지만, 문제점은 너무 빠르게 해싱이 수행된다는 것에 있다. 최신 CPU, GPU를 사용하면 SHA-256을 초당 천만번 수행할 수 있으므로 rainbow table을 통한 공격을 당할 수 있다. rainbow table이란 해시 함수를 사용하여 모든 해시 값을 저장시켜 놓은 표이다.</p>
+
+<p>하지만 bcrypt는 막대한 전처리 요구로 느리게 만든 Blowfish의 특징에 반복횟수를 변수로 지정하여 해싱시간을 조절할 수 있게 만들어졌다. 즉 속도 조절이 가능한 hash 함수이다. 공격자가 rainbow table을 생성하기엔 무한에 가까운 시간이 걸리므로 속도 조절이 가능한 bcrypt를 사용하는 것이다.</p>
+
+<p>OWASP(오픈소스 웹 애플리케이션 보안 프로젝트)에서는 특별한 이유가 아니라면 bcrypt 사용을 권장하고 있다.</p>
+
+<p>가장 좋은 비밀번호 저장 알고리즘은 Argon2id라고 한다.</p>
+
+<hr />
+
+<h2 id="bcrypt의-암호화-원리">bcrypt의 암호화 원리</h2>
+<h3 id="salting">Salting</h3>
+<p>단방향 해시 함수에서 추가적으로 임의 길이의 문자열을 생성하여 digest를 생성하는 방법을 salting이라고 한다. digest는 원본 메시지를 변환하여 암호화된 메시지를 뜻한다. salting을 사용하지 않을 경우, 동일한 메시지는 동일한 digest 생성으로 인한 문제점이 생긴다. salt 값과 메시지를 해시 함수에 넣어 digest를 생성하면 원래 비밀번호를 추측하기 어렵다.</p>
+
+<h3 id="키-스트레칭">키 스트레칭</h3>
+<p>입력한 비밀번호의 digest를 생성하고, 생성된 digest를 입력값으로 다시 digest를 반복 생성하는 방법이다. 공격자는 동일한 횟수만큼 해시해야만 해당하는 패스워드의 digest값의 일치 여부를 파악할 수 있다.</p>
+
+<hr />
+
+<h2 id="bcrypt-사용">bcrypt 사용</h2>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="nx">npm</span> <span class="nx">install</span> <span class="nx">bcrypt</span> <span class="o">--</span><span class="nx">save</span></code></pre></figure>
+
+<p>bcrypt를 설치해주자.</p>
+
+<p><img src="/images/bcrypt2.jpg" alt="" /></p>
+
+<p>bcrypt.genSalt()를 통해 salt을 생성해준다. 인자로 10을 넘겨준 것을 라운드 수가 10이라는 것을 의미한다. 즉 2^10번 키 스트레칭을 수행할 것이다. 라운드 수가 높아질수록 연산 시간과 보안이 높아진다. 매번 실행 시마다 salt값이 바뀐다.</p>
+
+<p>그리고 bcrypt.hash()를 통해  비밀번호와 salt값을 넣어서 hash 값을 만든다. 이 때 키 스트레칭이 앞서 언급한 키 스트레칭이 수행된다.</p>
+
+<p><img src="/images/bcrypt3.jpg" alt="" /></p>
+
+<p>hash 값을 사용자가 입력한 비밀번호와 일치 여부를 확인하려면 bcrypt.compare()을 사용하면 된다. 이미지에서 bcryptjs라고 되어있는데 이는 Javascript로 작성된 bcrypt 라이브러리로 C++로 작성된 라이브러리보다 조금 더 많이 쓰인다.</p>
+
+:ET

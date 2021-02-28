@@ -1,0 +1,65 @@
+I"�<hr />
+
+<h2 id="redux란"><strong>Redux란</strong></h2>
+<p>Redux는 애플리케이션 상태를 관리하기 위한 오픈소스 Javascript 라이브러리.<br />
+Redux는 글로벌 상태 관리를 할 때 효과적이다. 이러한 작업은 리액트 라이브러리에서 제공하는 Context API를 통해서도 사용가능하다. 
+두 가지 모두 전역상태를 관리한다는 점에서 비슷해보이지만 Redux에서 saga, thunk와 같은 미들웨어를 추가적으로 사용해 비동기 처리를 편한 방식으로 처리할 수 있다. 참고로 Redux는 Vue와 Angular에서도 사용가능하다.</p>
+
+<p><strong>전역상태 관리만을 원한다면 Context API</strong><br />
+<strong>미들웨어를 통한 추가적인 도구 사용, 디버깅 가시화 등을 원한다면 Redux</strong></p>
+
+<p>Redux는 store, reducer, action 3가지 요소로 구성된다.</p>
+
+<hr />
+
+<h2 id="store">store</h2>
+<p><img src="/images/redux2.jpg" alt="" /><br />
+store는 애플리케이션의 전역 상태를 저장한다. createstore를 통해 store를 생성할 수 있다. 객체 형식으로 저장하게 되는데 store의 인자에 reducer를 넣어주는 것을 필수다. reducer를 통해서만 store에 접근할 수 있기 떄문이다.</p>
+
+<p>위의 사진에는 reducer 외에도 initialstate로 빈 배열과 composewithDevTools 인자로 redux-thunk를 전달하였는데, 이는 필수적인 것은 아니고 생략해도 무방하다.</p>
+
+<hr />
+
+<h2 id="reducer">reducer</h2>
+<p><img src="/images/redux3.jpg" alt="" /><br />
+reducer는 저장소에 유일하게 접근가능한 객체이며, 전달받은 action에 따라 store에 접근해 상태를 업데이트한다.</p>
+
+<p>위의 사진에서 constant에서 받아온 것은 상태를 나타내기 위한 문자들이며, intialState는 말그대로 가장 초기의 상태를 뜻한다.<br />
+authReducer를 선언하면서 첫 번째 인자 state에 initialState를 인자로 주었다. 이렇게 하면 애플리케이션이 처음에 실행될 경우, initialState에 명시된 대로 초기화될 것이다.
+두 번째 인자 action에 dispatch함수를 통해 어떤 행동을 수행할 지 정보를 담은 자바스크립트 객체 action이 전달된다. 나같은 경우, redux-thunk 미들웨어를 사용했으므로, action 객체가 아닌 함수를 전달하였다.</p>
+
+<hr />
+
+<h2 id="action">action</h2>
+<p><img src="/images/redux4.jpg" alt="" /><br />
+action은 reducer에게 전달되는 store에 대한 행동이다. reducer는 action 객체를 전달받고 기술된대로 store에서 상태를 업데이트한다. redux-thunk의 사용으로 dispatch는 함수를 반환하며 axios를 통한 서버로부터 응답을 받고나서 dispatch가 실행된다. dispatch는 action을 reducer에 전달하는 함수를 뜻한다.</p>
+
+<hr />
+
+<p>이 외에 redux와 함께 사용되는 react-redux의 내장함수들에 대해 알아보자.</p>
+
+<h2 id="provider">provider</h2>
+<p><img src="/images/redux5.jpg" alt="" /><br />
+<img src="/images/redux6.jpg" alt="" /><br />
+provider는 react-redux의 내장함수로 애플리케이션에 store를 쉽게 연동할 수 있게 도와주는 컴포넌트를 뜻한다. 컴포넌트를 import하고 연동한 컴포넌트에 wrapping 해주고, props의 store에 정의해둔 store를 불러와 인자로 넣어주면 된다.</p>
+
+<h2 id="connect">connect</h2>
+<p><img src="/images/redux7.jpg" alt="" /><br />
+connect 함수는 redux와 연동되는 컴포넌트를 만들기 위한 방법중 하나로, 최근에는 useSelector나 useDispatch와 같은 리액트 훅의 등장으로 사용되지 않는편이다. 
+connect 함수를 통해 store 내의 상태나 action에 대한 dispatch를 props로 넣어줄 수 있다.</p>
+
+<h2 id="mapstatetoprops">mapStateToProps</h2>
+<p><img src="/images/redux8.jpg" alt="" /><br />
+mapStateToProps는 connect 함수의 인자로 전달되는 함수로 store에 대한 update를 반영하거나, 컴포넌트에 props로 
+전달해주기 위한 역활을 한다.</p>
+
+<hr />
+
+<p><img src="https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif" alt="myImage" /></p>
+
+<p>렛츠기릿</p>
+
+<h3 id="reference">Reference</h3>
+<p>https://velog.io/@cada/React-Redux-vs-Context-API<br />
+https://muang-kim.tistory.com/67</p>
+:ET

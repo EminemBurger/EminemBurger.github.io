@@ -1,0 +1,108 @@
+I"<hr />
+<h2 id="react-hook은-무엇인가요"><strong>React Hook은 무엇인가요?</strong></h2>
+
+<p>오늘은 리액트의 주요기능인 리액트 훅에 대해서 알아보고자 한다. 리액트 훅은 기존에 클래스형 컴포넌트에서만 할 수 있었던 기능인, 상태값 관리, 컴포넌트의 생명주기 함수를 함수형 컴포넌트에서 사용할 수 있게 해주는 기능이다.</p>
+
+<p>기존의 컴포넌트 생명주기 함수는 작성해야하는 코드도 많았고 가독성 또한 좋지 않았기에 리액트 훅을 사용하는 것을 권장한다.</p>
+
+<hr />
+<h2 id="hook-api"><strong>Hook API</strong></h2>
+<p>기본 hook</p>
+<ul>
+  <li>useState</li>
+  <li>useEffect</li>
+  <li>useContext</li>
+</ul>
+
+<p>추가 hook</p>
+<ul>
+  <li>useReducer</li>
+  <li>useCallback</li>
+  <li>useMemo</li>
+  <li>useRef</li>
+  <li>useImperativeHandle</li>
+  <li>useLayoutEffect</li>
+  <li>useDebugValue</li>
+</ul>
+
+<hr />
+
+<h2 id="usestate"><strong>useState</strong></h2>
+
+<p><img src="/images/reacthook1.jpg" alt="" /><br />
+기존 class 컴포넌트에서 사용하던 this.state와 동일한 역활을 한다.
+useState는 state 변수와 state를 업데이트하는 함수, 두 가지 쌍을 반환한다.
+첫 번째 인자가 state 변수이고, 두 번째 인자는 state를 업데이트하는 함수이다.
+두 번째 인자에 선언된 함수로 state 변수를 변경할 시, 렌더링이 다시 일어난다.</p>
+
+<p><img src="/images/reacthook2.jpg" alt="" /><br />
+다음과 같이 그대로 함수쓰듯이 사용하면 된다. 함수의 인자로 변경할 값을 전달해주면 해당 값으로 변경이 된다.</p>
+
+<hr />
+<h2 id="useeffect"><strong>useEffect</strong></h2>
+
+<p><img src="/images/reacthook3.jpg" alt="" /><br />
+useEffect는 기존 클래스 컴포넌트에서 사용되던 컴포넌트 생명주기 함수들, componentDidMount나 componentWillMount와 같은 함수들의 기능을 사용할 수 있게 해주는 함수이다. 렌더링되면서 effect, 함수가 실행된다. 두 번째 인자를 통해 특정한 상태가 update 되었을 때 effect가 실행되도록 설정할 수 있다. 검사할 값을 넣으면 해당 값이 update 되었을 때 effect가 실행된다.</p>
+
+<p>위 사진은 두 번째 인자로 빈 배열을 전달해 componentDidMount만 실행되도록 하였다. 만약 배열을 생략한다면 리렌더링 될 때마다 실행된다.</p>
+
+<p>useEffect안에 return 문을 작성하면 cleanup함수로 사용된다. 언마운트 될 때만 cleanup 함수를 실행시키려면 두 번째 인자로 빈 배열을, 특정값이 update 되기 직전에 cleanup 함수를 실행하고 싶을 때, 두 번째 인자로 검사하고 싶은 값을 넣어준다.</p>
+
+<p>두 번째 인자에 특정 값을 넣게 되면 컴포넌트가 처음 마운트 될 떄, 지정된 값이 바뀔 때, 언마운트 될 때, 값이 바뀌기 직전에 모두 호출된다.</p>
+
+<p>useEffect 안에서 사용하는 상태나 props가 있다면, useEffect안의 두 번째 인자에 넣어주는 것이 규칙이다. 만약 넣지 않으면, 최신 상태값을 가리키지 않게 된다.</p>
+
+<p>두 번째 인자를 생략하면 리렌더링 될 떄마다 실행된다.</p>
+
+<hr />
+<h2 id="usecontext"><strong>useContext</strong></h2>
+
+<p>추후에 useContext를 사용해보고 완전히 이해하게 되면 작성하겠다.</p>
+
+<hr />
+
+<h2 id="usehistory-uselocation"><strong>useHistory, useLocation</strong></h2>
+<p><img src="/images/reacthook4.jpg" alt="" /><br />
+<img src="/images/reacthook6.jpg" alt="" /><br />
+History와 Location은 자바스크립트에 내장된 전역 객체인 window의 프로퍼티 중 하나이다.
+Location 객체는 현재 브라우저에서 표시된 HTML 문서의 주소를 얻거나, 브라우저에서
+새 문서를 불러올 떄 사용할 수 있다. History 객체는 브라우저의 히스토리 정보를
+문서와 문서 상태 목록으로 저장하는 객체이다.</p>
+
+<p>useHistory와 useLocation을 사용해 History와 Location에서 사용할 수 있는 기능을
+그대로 사용가능하다. 리액트훅으로 사용하는 것과 window의 프로퍼티로서 Location과 History를
+사용하는 것의 차이는 리액트훅을 사용하면 어느 컴포넌트에서도 사용이 가능하며, 페이지를
+다시 reload할 필요가 없지만, window의 프로퍼티로서 사용할 경우, 애플리케이션이나 모든 자원을
+다시 reload한다고 한다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">    <span class="nx">npm</span> <span class="nx">install</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span> <span class="nx">react</span><span class="o">-</span><span class="nx">router</span><span class="o">-</span><span class="nx">dom</span></code></pre></figure>
+
+<p>useHistory와 useLocation은 React Router 라이브러리에서 사용할 수 있다. React Router
+SPA의 라우팅 문제를 해결하기 위해 표준처럼 사용되는 네비게이션 라이브러리이다. React Router를
+사용하면 앱에서 발생하는 라우팅이 History와 Location와 같은 브라우저 내장 API와 완벽하게 연동이 된다.</p>
+
+<p><strong>useHistory</strong><br />
+<img src="/images/reacthook5.jpg" alt="" /><br />
+버튼을 누를 경우, axios를 통한 요청이 이루어지고, history.push() 를 사용해
+‘/Forum’ 페이지로 이동하는 코드이다. history.push()에 pathname을 넣어주면
+해당하는 페이지로 이동할 수 있다.</p>
+
+<p><strong>useLocation</strong><br />
+<img src="/images/reacthook7.jpg" alt="" /><br />
+<img src="/images/reacthook8.jpg" alt="" /><br />
+위의 두 사진은 각각 다른 컴포넌트이다. 첫 번째 사진의 컴포넌트에서 Link를 통해
+데이터를 state에 담아 보내는 모습이다. 두 번째 사진의 컴포넌트에서 Location 객체의
+state에 담긴 데이터를 가져온 모습이다. useLocation을 통해 URL이 달라질 떄마다
+이벤트를 호출하거나, URL값을 가져올 수 있다.</p>
+
+<hr />
+
+<h3 id="reference"><strong>Reference</strong></h3>
+<p>https://medium.com/@dayong/%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%9B%85-react-hooks-1-%EA%B0%84%EB%8B%A8%ED%95%9C-%EC%86%8C%EA%B0%9C-eb02161b3ce4<br />
+https://bravenamme.github.io/2020/04/08/react-hook/<br />
+https://hocheon.tistory.com/79<br />
+https://xiubindev.tistory.com/100<br />
+https://mystyle1057.tistory.com/entry/Location-%EA%B0%9D%EC%B2%B4-History-%EA%B0%9D%EC%B2%B4-Screen-%EA%B0%9D%EC%B2%B4<br />
+https://www.daleseo.com/react-router-basic/</p>
+
+:ET

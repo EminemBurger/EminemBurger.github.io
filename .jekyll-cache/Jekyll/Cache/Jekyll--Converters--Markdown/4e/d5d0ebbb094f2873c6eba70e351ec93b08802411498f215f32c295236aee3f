@@ -1,0 +1,261 @@
+I"�]<hr />
+
+<p>이번 포스트는 라즈베리파이를 이용해서 24시간동안 돌아가는 웹 사이트를 구현해보려고 한다.<br />
+처음으로 만들어보기에 가볍게 포트폴리오만 올려보도록 했다.</p>
+
+<hr />
+
+<h2 id="라즈베리파이-설정"><strong>라즈베리파이 설정</strong></h2>
+
+<p>우선 라즈베리파이를 준비해야 한다. 나같은 경우 라즈베리파이와 연결할 모니터, 키보드가
+없었기에 원격접속을 하였다. 원격 접속을 하기 위해선 라즈베리파이의 sd 카드에 wpa_supplicant.conf와
+ssh 파일을 넣어야 한다. ssh는 파일의 내용작성없이 확장자 또한 없이 넣어야한다. ssh 파일을 넣으면
+라즈베리파이 내에서 ssh 접속을 허용하도록 설정이 변경되는 듯 하다. 그리고 wap_supplicant.conf 파일 내에 다음과
+같이 내용을 작성해준다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">country</span><span class="o">=</span><span class="nx">US</span>
+<span class="nx">ctrl_interface</span><span class="o">=</span><span class="nx">DIR</span><span class="o">=</span><span class="sr">/var/</span><span class="nx">run</span><span class="o">/</span><span class="nx">wpa_supplicant</span> <span class="nx">GROUP</span><span class="o">=</span><span class="nx">netdev</span>
+   <span class="nx">update_config</span><span class="o">=</span><span class="mi">1</span>
+   <span class="nx">network</span><span class="o">=</span><span class="p">{</span>
+    <span class="nx">ssid</span><span class="o">=</span><span class="dl">"</span><span class="s2">사용하는 공유기 이름</span><span class="dl">"</span>
+    <span class="nx">psk</span><span class="o">=</span><span class="dl">"</span><span class="s2">사용하는 공유기 비밀번호</span><span class="dl">"</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>작성하고 sd 카드에 파일을 넣어주고 라즈베리파이를 부팅하면 이제 원격으로 접속할 수 있다.
+원격 접속은 putty를 통해서 하면된다. 아직 라즈베리파이의 ip 주소를 모르므로 접속할 수가 없다.
+공유기가 라즈베리파이에 할당한 ip 주소를 확인해야한다. 나는 iptime 공유기를 사용하고 있었기에
+관리자 기본 접속 주소인 192.168.0.1에 접속하여 라즈베리파이의 ip 주소를 확인했다.</p>
+
+<p><img src="/images/portfolio1.JPG" alt="" /><br />
+위의 사진처럼 고급설정 - 네트워크 관리 - 내부 네트워크 설정에 들어가보면
+라즈베리파이에 전원이 연결되어 있다면 목록에 raspberrypi란 이름으로 뜰 것이다.
+라즈베리파이의 ip 주소를 확인했으면 이제 putty로 접속하면 된다.</p>
+
+<p><img src="/images/portfolio2.JPG" alt="" /><br />
+putty가 설치되있지 않으면 다운받고, Host Name에 라즈베리파이의 ip 주소를 입력해주고
+Open 버튼을 누르면 된다.</p>
+
+<p><img src="/images/portfolio3.JPG" alt="" /><br />
+성공적으로 접속하면 아이디와 비밀번호르 입력하라고 뜨는데, 처음으로 라즈베리파이를
+부팅했다면 기본 아이디는 pi이며, 비밀번호는 raspberry이다.</p>
+
+<p>로그인을 했으면 라즈베리파이 운영체제에서 사용 가능한 패키지들을 다음 명령어들로 업데이트와 업그레이드를 해준다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">sudo</span> <span class="nx">apt</span><span class="o">-</span><span class="kd">get</span> <span class="nx">update</span>
+<span class="nx">sudo</span> <span class="nx">apt</span><span class="o">-</span><span class="kd">get</span> <span class="nx">upgrade</span></code></pre></figure>
+
+<hr />
+<h2 id="docker-설치"><strong>Docker 설치</strong></h2>
+
+<p>그리고 라즈베리파이 자체에 라이브러리를 설치해도 되지만, 이번에는 docker를 활용해서 환경을 구현하기로 하였다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">curl</span> <span class="o">-</span><span class="nx">sSL</span> <span class="nx">https</span><span class="p">:</span><span class="c1">//get.docker.com | sh</span></code></pre></figure>
+
+<p>위 명령어를 입력해 docker를 설치한다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">sudo</span> <span class="nx">usermod</span> <span class="o">-</span><span class="nx">aG</span> <span class="nx">docker</span> <span class="nx">pi</span></code></pre></figure>
+
+<p>그리고 사용자를 docker 그룹에 추가해줘야 한다. 기본적인 사용자 이름은 pi 이다. 위 명령어를 통해 추가해준다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">docker</span> <span class="nx">version</span></code></pre></figure>
+
+<p>설치가 성공적으로 진행됬는지 확인해보기 위해 version 확인을 해보자. 성공적으로 설치가 됬다면
+docker의 version이 뜰 것이다. 만약 에러가 난다면 라즈베리파이를 재부팅해보자. 나같의 경우 docker를 설치한 직후
+바로 version 확인을 하면 사용자가 docker 그룹에 추가된 것이 반영이 안 된것인지 에러가 발생하였다.</p>
+
+<p>docker를 성공적으로 작성했다면 Dockerfile을 작성해보자.</p>
+
+<hr />
+
+<h2 id="dockerfile-형식"><strong>Dockerfile 형식</strong></h2>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">FROM</span> <span class="nx">node</span><span class="p">:</span><span class="mi">12</span>
+<span class="nx">WORKDIR</span> <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">src</span><span class="o">/</span><span class="nx">app</span>
+<span class="nx">COPY</span> <span class="p">[</span><span class="dl">"</span><span class="s2">package.json</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">package-lock.json</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">./</span><span class="dl">"</span><span class="p">]</span>
+<span class="nx">RUN</span> <span class="nx">npm</span> <span class="nx">install</span>
+<span class="nx">COPY</span> <span class="p">.</span> <span class="p">.</span>
+<span class="nx">EXPOSE</span> <span class="mi">4000</span>
+<span class="nx">CMD</span> <span class="p">[</span><span class="dl">"</span><span class="s2">node</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">server.js</span><span class="dl">"</span><span class="p">]</span> </code></pre></figure>
+
+<ul>
+  <li>FROM : docker base image , 기반이 되는 이미지. 형식은 이미지이름:태그 이다. node:12는 node.js의 이미지이며 12버전을 의미한다.</li>
+  <li>WORKDIR : “RUN”, “CMD” 명령이 실행될 작업 디렉터리를 의미한다. 통상적으로 /usr/src/app 으로 작성한다고 한다. 이미지를
+만들 때 해당 폴더를 만들어 그곳에서 앱을 실행시킨다고 한다.</li>
+  <li>COPY : 파일복사를 의미한다. 형식은 COPY (호스트 내부 복사 경로) (이미지 내부 저장 경로) 이다. Dockerfile을 작성할 떄 별도의 폴더를 생성하고,
+그 안에 이미지 생성에 필요한 파일들을 넣어둔다.  .은 현재 위치한 경로를 의미한다.</li>
+  <li>RUN : FROM 명령에서 설정한 베이스 이미지에 대해 실행하며, 패키지 설치 및 명령 실행에 사용된다.</li>
+  <li>EXPOSE : 외부로 노출시킬 포트 번호를 의미한다. 본인은 4000번 포트에 앱이 바인딩되어 있으므로 4000으로 작성하였다. 포트 번호는 임의로 정하면 된다.</li>
+  <li>CMD : 이미지를 바탕으로 생성된 컨테이너 실행 시 매번 명령을 실행한다. []로 씌워준 것은 exec 형식으로, 쉘을 호출하지 않고 직접 실행한다.  인수는 JSON 배열로 지정한다.</li>
+</ul>
+
+<hr />
+<h2 id="포트폴리오-코드"><strong>포트폴리오 코드</strong></h2>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span><span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kd">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)));</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/test.html</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Server is running!</span><span class="dl">"</span><span class="p">))</span></code></pre></figure>
+
+<p>Dockerfile에서 CMD를 통해 실행시키는 server.js의 코드이다. 코드는 간단하다. express를 통해 서버를 생성하고,
+현재 경로에 위치한 test.html, 포트폴리오를
+4000번 포트로 내보낸다. 이 때문에 Dockerfile 내 EXPOSE에서 4000으로 작성하였다. dirname은 현재 경로를 의미한다. 
+정적 페이지에 가까워 웹 서버에 바로 띄워도 되지만, 웹 서버와 웹 애플리케이션 서버를 나누어 사용하는 구조를
+익혀보기 위해 이런 방식으로 하였다.</p>
+
+<hr />
+
+<h2 id="웹-서버-vs-웹-애플리케이션-서버"><strong>웹 서버 vs 웹 애플리케이션 서버</strong></h2>
+
+<p>이제 웹 서버인 nginx를 설치해야 한다. 방금 코드를 통해 서버를 생성하지 않았나요? 물어볼 수도 있기에, 웹 서버와 
+웹 애플리케이션 서버에 대해 말해두고자 한다.<br />
+<img src="/images/nginx1.jpg" alt="" /><br />
+우리가 Node.js에서 express를 통해 생성한 서버는 웹 애플리케이션 서버이다. 웹 서버와 웹 애플리케이션 서버의 차이에 대해서 알아보자.</p>
+
+<p><strong>웹 서버</strong><br />
+클라이언트의 요청을 받아서 처리하고, 그 결과를 웹 클라이언트에 응답한다. 정적 페이지만 처리하기에 HTML, CSS, javascript 파일을
+클라이언트에 제공할 때 웹 서버를 사용한다. 동적 페이지 처리가 필요할 경우, 웹 애플리케이션 서버에 처리를 넘긴다.</p>
+
+<p><strong>웹 애플리케이션 서버</strong><br />
+웹 서버로부터 동적 페이지 요청을 받아, 요청을 처리하고 그 결과를 웹 서버에 반환한다. 주로
+동적 페이지 생성을 위한 프로그램 실행과 데이터베이스 연동 기능을 처리한다.</p>
+
+<p>물론 웹 애플리케이션 서버를 통해 웹 서버의 역활까지 수행할 수 있지만,
+웹 서버와 웹 애플리케이션 서버가 분리되면서, 서로의 역활을 구분하여 사용하는 것이 좋다.
+동적 페이지를 처리하는 경우, 정적 페이지보다 수십패의 메모리를 소비하기 때문에, 웹 애플리케이션
+서버가 정적 페이지까지 처리하는 것은 비효율적이기 떄문이다.</p>
+
+<p>아파치나 nginx와 같은 웹 서버를 통해 서버 유지보수와 트래픽 관리같은 서버 운영을 할 수 있다. 
+하지만 신경써야할 것이 많고 어렵기도 하고 비용도 많이 든다! 그래서 업계에서 PaaS (Platform as a Service)가
+많이 사용된다. PaaS는 AWS와 같은 클라우드 서비스 제공 업체에서 제공하는 서비스 중 하나로, 서버관리를 AWS에서 해준다. 
+low level에 대해 개발자의 부담을 덜어주어, 웹 애플리케이션 개발에 집중할 수 있다. 그래도 고오급 개발자가 되길 원한다면
+웹 서버를 관리하는 방법에 대해 알아 두는 것 또한 좋을 것이다.</p>
+
+<hr />
+
+<h2 id="nginx-설치-및-설정"><strong>nginx 설치 및 설정</strong></h2>
+
+<p>nginx는 웹 서버의 종류 중 하나로, 아파치에서 제공하는 기능이 없고 보안 문제들은 Nginx 자체에서 
+처리해준다고 한다. 적은 수의 쓰레드로 효율적인 일 처리를 하고, 쓰레드당 할당되는 메모리도 적게 사용하는 구조이므로
+규모가 작고 정적 데이터 처리가 많은 서비스를 제공하는데 적합하다. 안전성과 확장성, 호환성 면에서는
+아파치, 성능을 추구한다면 nginx가 우세하다고 한다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">sudo</span> <span class="nx">apt</span><span class="o">-</span><span class="kd">get</span> <span class="nx">install</span> <span class="nx">nginx</span>
+<span class="nx">sudo</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">init</span><span class="p">.</span><span class="nx">d</span><span class="o">/</span><span class="nx">nginx</span> <span class="nx">start</span></code></pre></figure>
+
+<p>명령어를 통해 nginx를 설치하고, 설치가 완료되면 nginx를 실행한다. 
+실행이 정상적으로 되면 라즈베리파이의 ip에 접속하면 nginx 환영 문구가 뜰 것이다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">cd</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">init</span><span class="p">.</span><span class="nx">d</span><span class="o">/</span><span class="nx">sites</span><span class="o">-</span><span class="nx">available</span></code></pre></figure>
+
+<p>위의 경로로 이동한다. sites-available은 가상 서버 환경들에 대한 설정 파일들이 위치하는 곳이다.<br />
+sudo nano [파일이름] 명령어를 통해 가상서버 파일을 작성한다.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js">	<span class="nx">listen</span> <span class="mi">80</span><span class="p">;</span> <span class="err">#</span> <span class="nx">기본포트는</span> <span class="mi">80</span><span class="p">.</span> <span class="nx">변경하려면</span> <span class="nx">conf</span><span class="o">/</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">confdml</span> <span class="nx">listen을</span> <span class="nx">수정한다</span><span class="p">.</span>
+
+	<span class="nx">location</span> <span class="o">/</span> <span class="p">{</span>
+		<span class="nx">proxy_set_header</span> <span class="nx">X</span><span class="o">-</span><span class="nx">Real</span><span class="o">-</span><span class="nx">IP</span> <span class="o">&amp;</span> <span class="nx">remote_addr</span><span class="p">;</span> <span class="err">#</span> <span class="nx">실제</span> <span class="nx">접속자의</span> <span class="nx">IP를</span> <span class="nx">X</span><span class="o">-</span><span class="nx">Real</span><span class="o">-</span><span class="nx">IP</span> <span class="nx">헤더에</span> <span class="nx">입혀서</span> <span class="nx">전송</span><span class="p">.</span>
+		<span class="nx">proxy_set_header</span> <span class="nx">X</span><span class="o">-</span><span class="nx">Forwarded</span><span class="o">-</span><span class="nx">For</span> <span class="nx">$</span> <span class="nx">proxy_add_x_forwarded_for</span><span class="p">;</span> <span class="err">#</span> <span class="nx">nginx의</span> <span class="nx">ip를</span> <span class="nx">헤더에</span> <span class="nx">덧붙힌다</span><span class="p">.</span>
+		<span class="nx">proxy_set_header</span> <span class="nx">Host</span> <span class="nx">$http_host</span><span class="p">;</span>
+		<span class="nx">proxy_set_header</span> <span class="nx">X</span><span class="o">-</span><span class="nx">Nginx</span><span class="o">-</span><span class="nb">Proxy</span> <span class="kc">true</span><span class="p">;</span> <span class="err">#</span> <span class="nx">nginx를</span> <span class="nx">reverse</span> <span class="nx">proxy</span> <span class="nx">server로</span> <span class="nx">설정</span>
+		
+
+		<span class="nx">proxy_pass</span> <span class="na">http</span><span class="p">:</span><span class="c1">//192.168.0.11:5000/; # 실질적으로 요청할 서비스를 명시. 들어온 요청을 어디로 포워딩 할지 정한다.</span>
+		<span class="nx">proxy_redirect</span> <span class="nx">off</span><span class="p">;</span>
+	<span class="p">}</span>
+
+    <span class="nx">gzip</span> <span class="nx">on</span><span class="p">;</span>
+    <span class="nx">gzip_comp_level</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">gzip_proxied</span> <span class="nx">any</span><span class="p">;</span>
+    <span class="nx">gzip_min_length</span>  <span class="mi">1000</span><span class="p">;</span>
+    <span class="nx">gzip_disable</span>     <span class="dl">"</span><span class="s2">MSIE [1-6]</span><span class="se">\</span><span class="s2">.</span><span class="dl">"</span>
+    <span class="nx">gzip_types</span> <span class="nx">text</span><span class="o">/</span><span class="nx">plain</span> <span class="nx">text</span><span class="o">/</span><span class="nx">css</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">javascript</span> <span class="nx">te$</span></code></pre></figure>
+
+<p>다음과 같이 작성해준다. 리버스 프록시 서버는 클라이언트에서 요청을 받아 처리를 한 뒤, 적절한
+서버에 전달해주는 서버를 뜻한다. gzip는 텍스트를 압축해 전송해주는 모듈이다.
+listen은 http 표준 포트인 80번을 사용한다. 80번 포트를 통해 요청을 받을 것이다.
+클라이언트가 80번 포트를 통해 요청을 보낼 수 있도록 포트포워딩을 해줄것이다.
+proxy-pass는 라즈베리파이의 ip주소:임의의 포트번호 형식으로 작성해주면 된다.</p>
+
+<hr />
+
+<h2 id="포트포워딩"><strong>포트포워딩</strong></h2>
+
+<p>포트번호를 통해서 서버는 요청을 받았을 때, 웹 사이트 요청을 했는지 FTP를 이용한 파일 요청을 받았는지 알고
+그에 대한 처리를 할 수 있다. 최상위 도메인을 관리하는 단체인 IANA에서는 포트 번호에 따라 쓰임새를 정해두었다.
+80번은 주로 HTTP - 웹 페이지 전송으로 웹 사이트 요청을 받는데 사용되는 포트이다.</p>
+
+<p><strong>포트포워딩은 외부에서 특정 포트를 통해 유입되는 모든 패킷을, 내부의 ip의 특정 포트로 전달하는 것을 의미한다.</strong></p>
+
+<p>포트포워딩을 해주지 않으면 외부에서 라즈베리파이로 접근할 수 없다. 어느 포트로 접근할지 지정해주지 않았기 때문이다.</p>
+
+<p><img src="/images/portforwarding.jpg" alt="" /></p>
+
+<p>공유기 관리자에 들어가 포트포워딩을 설정해준다. 고급 설정 - NAT/라우터 관리에서 외부 80번 포트가
+내부 80번 포트에 포트포워딩되도록 규칙을 생성하자.
+외부에서 인터넷을 통해 접근하면 포트 80번은 HTTP 요청을 받는 곳으로 지정되있기에 외부의
+요청은 포트 80을 통해 들어온다. 
+그렇게 공유기의 외부 ip 주소 포트 80번을 통해 접근할 경우, 내부 ip 포트 80번으로 연결해준다.
+내부 ip는 라즈베리파이의 ip 주소로 해준다. 내부 ip 주소는 공유기에서 내부적으로 할당한 ip로, 다른 사용자가
+ip를 알고있다해도 접근할 수 없다.
+포트포워딩이 제대로 되었다면, 공유기의 외부 ip 주소를 입력하면 제작한 웹 사이트가 뜬다.
+공유기의 외부 ip 주소는 공유기 관리자에서 확인할 수 있다. 외부 ip 주소는 다른
+사용자가 접근할 수 있기 때문에 공개하지 않는 것이 보안에 좋다.</p>
+
+<hr />
+
+<h2 id="도메인-등록"><strong>도메인 등록</strong></h2>
+
+<p>도메인은 ip 주소 대신 사용하는 명칭같은 것으로, 도메인 등록을 하려면
+등록 업체에서 도메인을 구입해야한다.. 돈 내는 것이 싫다면 무료 도메인 사이트인
+freenom을 사용하는것을 권한다. 단, 어디까지나 테스트용으로 사용해볼 수 있는 수준이고,
+직접 사용해 본 결과 지속적으로 도메인 연결이 되지는 않았다..
+어느 사이트를 사용하건 자유지만, 나는 카페24에서 할인되는 도메인을 구매하였다.</p>
+
+<p><img src="/images/portfolio4.JPG" alt="" /></p>
+
+<p>도메인을 구매하면 호스팅 센터에서 도메인을 관리할 수 있다. 도메인을 연결하려면
+도메인 부가서비스 - DNS 관리에 들어간다.</p>
+
+<p><img src="/images/portfolio5.JPG" alt="" /></p>
+
+<p>도메인을 클릭하고 DNS 관리 버튼을 누른다.</p>
+
+<p><img src="/images/portfolio6.JPG" alt="" /><br />
+<img src="/images/portfolio7.JPG" alt="" /></p>
+
+<p>호스트 IP (A 레코드) 관리를 누르고 레코드를 추가한다.
+ip 주소는 공유기의 외부 ip 주소를 입력해준다.</p>
+
+<hr />
+
+<h2 id="후기"><strong>후기</strong></h2>
+
+<p><img src="https://media.giphy.com/media/Ewp3iPauiVG0ekDLm4/giphy.gif" alt="myImage" /></p>
+
+<p>라즈베리파이를 사용해 포트폴리오를 웹 사이트 형식으로 올려보면서 
+그 속에서 네트워크와 관련된 지식들을 생각보다 많이 접하게 되어서, 그동안
+학과에서 배워왔던 전공지식들, 눈에 보이지 않아 너무 추상적이라 생각된 개념들이
+결국엔 다 중요한 것이라는 걸 깨닫게 되었다. 아직도 배울것이 산더미처럼 많고,
+내 자신이 어디까지 성장할 수 있을지 모르겠지만 나는 내가 하고 싶은 일을 하고,
+만들고 싶은 것을 만들고 싶다. 오늘도</p>
+
+<p><img src="https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif" alt="myImage" /></p>
+
+<p>수고했습니다</p>
+
+<h2 id="reference"><strong>Reference</strong></h2>
+<p>https://blog.d0ngd0nge.xyz/docker-dockerfile-write/<br />
+https://dico.me/server/articles/259/ko<br />
+https://rrhh234cm.tistory.com/456<br />
+https://victorydntmd.tistory.com/231<br />
+http://makeshare.org/bbs/board.php?bo_table=raspberrypi&amp;wr_id=68</p>
+
+:ET
