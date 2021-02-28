@@ -20,7 +20,7 @@ categories: libraries
 
     npm install --save-dev react-router-dom
 
-{% endhilight %}  
+{% endhighlight %}  
 ![]({{site.baseurl}}/images/react-router-dom1.jpg)  
 최상단 App 컴포넌트를 BrowserRouter 혹은 HashRouter로 감싸주어야 react-router-dom 기능을 사용할 수 있다.
 HashRouter는 지원되는 브라우저 버전도 오래됬고 현업에 사용하지 않는 추세이니 BrowserRouter를 사용하는 것을 권장한다.
