@@ -32,7 +32,7 @@ cors는 브라우저가 리소스를 요청할 때 추가적인 정보를 header
   <script type="text/javascript"
     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=앱 키?&libraries=services,clusterer,drawing"></script>
 
-{% endhilight %}
+{% endhighlight %}
 
 나같은 경우, 프로젝트를 진행할 때 script로 API를 불러와 사용했기 때문에 cors의 정책에서 벗어날 수 있었다.
 script 태그의 src 속성값엔 도메인 제약이 없기 떄문이다. 위의 형태로 depi.kakao.com에 데이터를 요청하면
@@ -77,7 +77,7 @@ app.get('/products/:id', cors(), function (req, res, next) {
 
 
 **3. Access-Control-Allow-Origin 세팅**  
-{% highlight %}
+{% highlight js%}
 app.get("/api/keywords", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*") // 헤더를 추가한다
   res.json(keywords)
@@ -89,7 +89,7 @@ app.get("/api/keywords", (req, res) => {
 설정해줄 수 있다.
 
 **4. Webpack Dev Server로 리버스 프록싱하기**
-{% highlight %}
+{% highlight js %}
 // webpack.config.js
 module.exports = {
   devServer: {
