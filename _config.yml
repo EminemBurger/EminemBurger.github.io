@@ -1,7 +1,7 @@
-title: "EminemBurger's blog"
+title: EminemBurger's blog
 description: Flexton is a responsive and ultra-minimal theme for Jekyll.
-baseurl: "/EminemBurger.github.io" # the subpath of your site, e.g. /blog
-url: "https://eminemburger.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "eminemburger.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author
 author-name:    Kim Dong Hyeon
