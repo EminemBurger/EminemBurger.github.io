@@ -97,11 +97,84 @@ express을 사용할 경우 next를 사용한 미들웨어 사용, http 기본 �
 
 ***
 
+## **express 사용**
+{% highlight js %}
+    const express = require('express');
+    const cors = require('cors');
+    const app = express();
+    const routesUrls = require('/routes/routes');
 
+    app.listen(4000, () => console.log("server is running!"));
 
+    app.use(cors());
+    app.use('/app', routesUrls);
+{% endhighlight %}
+
+express의 인스턴스를 통해서 서버를 쉽게 생성할 수 있다. app은 express의 인스턴스이며 listen 메소드를 통해 서버 생성이 가능하다.
+express의 인스턴스를 통해서 **라우팅**이 가능하다. 라우팅은 URI 또는 HTTP 요청 메소드(GET,POST등)의 특정 엔드 포인트에 대한
+클라이언트 요청에 애플리케이션이 응답하는 방법을 결정하는 것을 뜻한다. 
+
+각 라우트 함수는 하나 이상의 핸들러 함수를 가질 수 있으며, 이러한 함수는 라우트가 일치할 때 실행된다.
+
+라우트 정의에는 다음과 같은 구조가 요구된다.
+
+{% highlight js %}
+    app.METHOD(PATH, HANDLER);
+{% endhighlight %}
+
+* **app** : express의 인스턴스입니다.
+* **METHOD** : HTTP 요청 메소드.
+* **PATH** : 서버에서의 경로.
+* **HANDLER** : 라우트가 일치할 때 실행되는 함수.
+
+위 코드에서는 HTTP 메소드를 사용하지 않고 use를 사용하였는데 use는 특정 path에 
+미들웨어 함수를 마운트하기 위한 메소드이며, path 인자를 생략할 시 모든
+요청에서 수행된다. 위의 코드 같은 경우, routes는 express.Router() 인스턴스에
+바인드된 라우터 레벨 미들웨어이며, 이를 /app 경로에 미들웨어로 마운트한 모습이다. 
+express에서는 express.Router 인스턴스를 통해 기능별로 라우터를 나누어 쉽게 코드를 관리할 수 있다.
+
+{% highlight js %}
+    const router = express.Router();
+
+    router.get(URI 이름, 콜백함수);
+
+    router.post(URI 이름, 미들웨어, 콜백함수);
+
+    .
+    .
+    .
+
+    module.exports = router;
+
+{% endhighlight %}
+
+***
+
+다음 코드와 같이 라우터에 기능을 추가하고 module.exports를 통해
+내보내어 express 인스턴스에 마운트하면 된다. 
+자주 사용되는 기능은 미들웨어 함수로 작성하여 따로 관리하도록 하자.
+
+{% highlight js %}
+    router.get('/signin', function(req,res,next) {
+        .
+        .
+        next();
+    });
+
+    router.post('/signin', function(req,res) {
+        .
+        .
+    });
+
+{% endhighlight %}
+
+콜백함수의 인자로 next를 안 주는 경우, 클라이언트의 요청에 대해 최종적으로 애플리케이션이 응답하는 라우트가 된다.
+next를 주고, 작업을 수행하고 next() 메소드를 호출하면 다음 미들웨어 함수에 req, res를 넘긴다.
 
 ## **Reference**
 https://wikibook.co.kr/article/what-is-expressjs/  
 https://velog.io/@madpotato1713/JAVASCRIPT-express%EB%9E%80  
+https://expressjs.com/ko/starter  
+
 
 

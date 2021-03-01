@@ -103,6 +103,7 @@ module.exports = {
 개발서버에 들어온 모든 HTTP 요청중 /api로 시작되는 것은 http://localhost:8081로 요청하는
 설정이다. 브라우저에서 API를 요청 하는 것이 아닌 Webpack Devserver를 통해 API를 요청하는 것이기 떄문에
 cors의 제한을 받지 않는다.
+
 ***
 ## **Reference**
 https://velog.io/@hwang-eunji/CORS  
