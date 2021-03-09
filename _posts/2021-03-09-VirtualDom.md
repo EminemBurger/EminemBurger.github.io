@@ -1,6 +1,6 @@
 ---
 layout: post
-title: react virtual dom
+title: Virtual DOM
 image: react.png
 date: 2021-03-09 23:08:20 +0200
 tags:
@@ -15,14 +15,14 @@ categories: libraries
 
 ***
 
-## DOM 이란?
+## **DOM 이란?**
 
 DOM은 원본 HTML 문서의 객체 기반 표현이다. 둘은 서로 비슷하지만, DOM이 갖고 있는 근본적인 차이는 단순
 텍스트로 구성된 HTML 문서의 내용과 구조가 객체 모델로 변환되어 다양한 프로그램에서 사용될 수 있다는 점이다.
 
 ***
 
-## DOM이 SPA에서 비효율적인 이유
+## **DOM이 SPA에서 비효율적인 이유**
 
 HTML 파서는 HTML 문서를 바탕으로 DOM 트리를 만든다. 하지만 DOM 조작을 통해서 화면 요소를 바꾸면 DOM
 트리를 재구성할 필요가 있다. 트리가 재구성되면서 브라우저는 Layout, Painting 작업을 다시 진행한다.
@@ -31,7 +31,7 @@ HTML 파서는 HTML 문서를 바탕으로 DOM 트리를 만든다. 하지만 DO
 
 ***
 
-## Virtual DOM 
+## **Virtual DOM**
 
 이러한 부분에서 Virtual DOM이 등장하게 되었다. 만약에 뷰에 변화가 생기면, 그 변화는 실제 DOM에 적용되기 전,
 가상으로 만든 DOM에 먼저 적용시키고, 최종적인 결과를 실제 DOM에 전달해준다. 이로써, 브라우저 내에서 발생하는
