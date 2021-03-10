@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Hoisting & Closer
+title: Hoisting & Closure
 image: js.jpg
-date: 2021-03-09 10:08:20 +0200
+date: 2021-03-10 10:08:20 +0200
 tags: 
 categories: javascript
 ---
